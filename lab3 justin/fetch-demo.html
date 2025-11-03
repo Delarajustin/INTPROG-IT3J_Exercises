@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch API Demo</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 380px;
+    }
+    h2 { color: #1e3a8a; margin-bottom: 20px; }
+    button {
+      background: #2563eb;
+      border: none;
+      color: #fff;
+      padding: 10px 18px;
+      margin: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #1d4ed8; transform: scale(1.05); }
+    #output {
+      margin-top: 20px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 80px;
+      text-align: left;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🧪 Fetch API Demo</h2>
+    <button id="btnGet">Load Data (GET)</button>
+    <button id="btnPost">Send Data (POST)</button>
+    <div id="output">Click a button to start.</div>
+  </div>
+
+  <script>
+    const output = document.getElementById("output");
+
+    // GET request
+    document.getElementById("btnGet").addEventListener("click", async () => {
+      output.textContent = "Loading post data...";
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+        const data = await res.json();
+        output.innerHTML = `<strong>Title:</strong> ${data.title}<br><br>
+                            <strong>Body:</strong> ${data.body}`;
+      } catch (err) {
+        output.textContent = "Error: " + err.message;
+      }
+    });
+
+    // POST request
+    document.getElementById("btnPost").addEventListener("click", async () => {
+      output.textContent = "Sending new post...";
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "My New Post", body: "Fetch API is cool!", userId: 1 })
+        });
+        const data = await res.json();
+        output.innerHTML = `✅ <strong>New Post Created!</strong><br>ID: ${data.id}`;
+      } catch (err) {
+        output.textContent = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
